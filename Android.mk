@@ -93,7 +93,7 @@ LOCAL_SRC_FILES := \
 	src/glx/glx.c \
 	src/glx/lookup.c \
 	src/glx/streaming.c
-LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -O3 -flto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -std=gnu2x -funwind-tables -O3 -fvisibility=hidden -fno-semantic-interposition -include include/android_debug.h
+LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -O3 -flto=auto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -std=gnu2x -funwind-tables -O3 -fvisibility=hidden -fno-semantic-interposition -include include/android_debug.h
 LOCAL_CFLAGS += -DNOX11
 LOCAL_CFLAGS += -DNO_GBM
 LOCAL_CFLAGS += -DDEFAULT_ES=2
