@@ -43,7 +43,7 @@ char * InplaceReplaceByIndex(char* pBuffer, int* size, const int startIndex, con
     else
         length_difference = strlen(replacement) - (endIndex - startIndex); // Can be negative if repl is smaller
 
-    pBuffer = ResizeIfNeeded(pBuffer, size, length_difference);
+    pBuffer = gl4es_resize_if_needed(pBuffer, size, length_difference);
     //SHUT_LOGD("BEFORE MOVING: \n%s", pBuffer);
     // Move the end of the string
     memmove(pBuffer + startIndex + strlen(replacement) , pBuffer + endIndex + 1, strlen(pBuffer) - endIndex + 1);
