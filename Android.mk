@@ -79,6 +79,7 @@ LOCAL_SRC_FILES := \
 	src/gl/texture_3d.c \
 	src/gl/uniform.c \
 	src/gl/vertexattrib.c \
+        src/gl/host.c \
 	src/gl/wrap/gl4eswraps.c \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
