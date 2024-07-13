@@ -20,6 +20,6 @@ EXPORT void LogPrintf(const char *fmt,...);
 #endif
 //----------------------------------------------------------------------------
 #define LOGD(...) LogPrintf(__VA_ARGS__)
-#define LOGE(...) LogFPrintf(stderr,__VA_ARGS__)
+#define LOGE(...) LogPrintf(stderr,__VA_ARGS__)
 //----------------------------------------------------------------------------
 #endif // _GL4ES_LOGS_H_
