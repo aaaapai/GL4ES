@@ -1,3 +1,4 @@
+#include "host.h"
 #include "loader.h"
 
 void (APIENTRY_GL4ES *gl4es_getMainFBSize)(GLint* width, GLint* height);
@@ -75,21 +76,19 @@ static const char *lib_ext[] = {
 
 static const char *gles2_lib[] = {
     #if defined(BCMHOST)
-    "libbrcmGLESv2",
+    "libbrcmGLESv3",
     #endif
-    "libGLESv2_CM",
-    "libGLESv2",
+    "libGLESv3_CM",
+    "libGLESv3",
     NULL
 };
 
 static const char *gles_lib[] = {
     #if defined(BCMHOST)
-    "libbrcmGLESv1_CM",
+    "libbrcmGLESv3",
     #endif
-    #if !defined(PYRA)
-    "libGLESv1_CM",
-    #endif
-    "libGLES_CM",
+    "libGLESv3_CM",
+    "libGLESv3",
     NULL
 };
 
@@ -186,6 +185,7 @@ void load_libs() {
     const char *drm_override = GetEnvVar("LIBGL_DRM");
     drm = open_lib(drm_lib, drm_override);
 #endif
+    init_gl_functions();
 }
 #endif
 

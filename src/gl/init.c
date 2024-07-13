@@ -201,11 +201,11 @@ void initialize_gl4es() {
         break;
       default:
         // automatic GL version selection
-        globals4es.gl = (globals4es.es==1)?15:21;  // forcing GL 1.5 for es1.1 and GL 2.1 for es2.0
+        globals4es.gl = (globals4es.es==1)?15:33;  // forcing GL 1.5 for es1.1 and GL 2.1 for es2.0
         break;
     }
 
-    SHUT_LOGD("Using GLES %s backend\n", (globals4es.es==1)?"1.1":"2.0");
+    SHUT_LOGD("Using GLES %s backend\n", (globals4es.es==1)?"1.1":"3.2");
 
     env(LIBGL_NODEPTHTEX, globals4es.nodepthtex, "Disable usage of Depth Textures");
 

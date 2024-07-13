@@ -1,3 +1,4 @@
+#include "host.h"
 #include "texture.h"
 
 #include "../glx/hardext.h"
@@ -177,7 +178,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexImage2D(GLenum target, GLint level, GLe
     }
     FLUSH_BEGINEND;
 
-    // actualy bound if targetting shared TEX2D
+    // actually bound if targeting shared TEX2D
     realize_bound(glstate->texture.active, target);
 
     gltexture_t* bound = glstate->texture.bound[glstate->texture.active][itarget]; 
@@ -328,7 +329,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexImage2D(GLenum target, GLint level, GLe
         if (pixels!=datab)
             free(pixels);
     } else {
-        LOAD_GLES(glCompressedTexImage2D);
+        
         bound->alpha = 1;
         bound->format = internalformat;
         bound->type = GL_UNSIGNED_BYTE;
@@ -337,7 +338,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexImage2D(GLenum target, GLint level, GLe
         bound->valid = 1;
         if (glstate->fpe_state && glstate->fpe_bound_changed < glstate->texture.active+1)
             glstate->fpe_bound_changed = glstate->texture.active+1;
-        gles_glCompressedTexImage2D(rtarget, level, internalformat, width, height, border, imageSize, datab);
+        host_functions.glCompressedTexImage2D(rtarget, level, internalformat, width, height, border, imageSize, datab);
         errorGL();
     }
     glstate->vao->unpack = unpack;
@@ -350,7 +351,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexSubImage2D(GLenum target, GLint level, 
     const GLuint itarget = what_target(target);
     FLUSH_BEGINEND;
 
-    // actualy bound if targetting shared TEX2D
+    // actually bound if targeting shared TEX2D
     realize_bound(glstate->texture.active, target);
 
     gltexture_t *bound = glstate->texture.bound[glstate->texture.active][itarget];
@@ -360,7 +361,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexSubImage2D(GLenum target, GLint level, 
     GLvoid *datab = (GLvoid*)data;
     if (unpack)
         datab = (char*)datab + (uintptr_t)unpack->data;
-    LOAD_GLES(glCompressedTexSubImage2D);
+    
     errorGL();
     int simpleAlpha = 0;
     int complexAlpha = 0;
@@ -406,7 +407,7 @@ void APIENTRY_GL4ES gl4es_glCompressedTexSubImage2D(GLenum target, GLint level, 
         if (pixels!=datab)
             free(pixels);
     } else {
-        gles_glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, datab);
+        host_functions.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, datab);
     }
 }
 
