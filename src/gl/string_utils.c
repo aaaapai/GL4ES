@@ -30,6 +30,50 @@ char* gl4es_inplace_replace(char* pBuffer, int* size, const char* S, const char*
     return pBuffer;
 }
 
+char * InplaceReplaceByIndex(char* pBuffer, int* size, const int startIndex, const int endIndex, const char* replacement)
+{
+    //SHUT_LOGD("BY INDEX: %s", replacement);
+    //SHUT_LOGD("BY INDEX: %i", strlen(replacement));
+
+    int length_difference;
+    if(endIndex < startIndex)
+        length_difference = strlen(replacement) + (endIndex - startIndex);
+    else if(endIndex == startIndex)
+        length_difference = strlen(replacement) - 1; // The initial char gets replaced
+    else
+        length_difference = strlen(replacement) - (endIndex - startIndex); // Can be negative if repl is smaller
+
+    pBuffer = ResizeIfNeeded(pBuffer, size, length_difference);
+    //SHUT_LOGD("BEFORE MOVING: \n%s", pBuffer);
+    // Move the end of the string
+    memmove(pBuffer + startIndex + strlen(replacement) , pBuffer + endIndex + 1, strlen(pBuffer) - endIndex + 1);
+    //SHUT_LOGD("AFTER MOVING 1: \n%s", pBuffer);
+
+    // Insert the replacement
+    memcpy(pBuffer + startIndex, replacement, strlen(replacement));
+    //strncpy(pBuffer + startIndex, replacement, strlen(replacement));
+    //SHUT_LOGD("AFTER MOVING 2: \n%s", pBuffer);
+
+    return pBuffer;
+}
+
+/**
+ * Insert the string at the index, pushing "every chars to the right"
+ * @param source The shader as a string
+ * @param sourceLength The ALLOCATED length of the shader
+ * @param insertPoint The index at which the string is inserted.
+ * @param insertedString The string to insert
+ * @return The shader as a string, maybe in a different memory location
+ */
+char * InplaceInsertByIndex(char * source, int *sourceLength, const int insertPoint, const char *insertedString){
+    int insertLength = strlen(insertedString);
+    source = ResizeIfNeeded(source, sourceLength, insertLength);
+    memmove(source + insertPoint + insertLength,  source + insertPoint, strlen(source) - insertPoint + 1);
+    memcpy(source + insertPoint, insertedString, insertLength);
+
+    return source;
+}
+
 char* gl4es_inplace_insert(char* pBuffer, const char* S, char* master, int* size)
 {
     char* m = gl4es_resize_if_needed(master, size, strlen(S));
@@ -129,7 +173,7 @@ char* gl4es_resize_if_needed(char* pBuffer, int *size, int addsize) {
     char* p = pBuffer;
     int newsize = strlen(pBuffer)+addsize+1;
     if (newsize>*size) {
-        newsize += 100;
+        // newsize += 100;
         p = (char*)realloc(pBuffer, newsize);
         *size=newsize;
     }
@@ -157,6 +201,14 @@ static int gl4es_is_blank(char c)  {
         default:
             return 0;
     }
+}
+
+int isDigit(char value){
+    return (value >= '0' && value <= '9');
+}
+
+int isValidFunctionName(char value){
+    return ((value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z') || (value == '_'));
 }
 char* gl4es_str_next(char *pBuffer, const char* S) {
     if(!pBuffer) return NULL;

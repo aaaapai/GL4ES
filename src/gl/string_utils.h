@@ -3,11 +3,16 @@
 
 extern const char* AllSeparators;
 
+int isDigit(char value);
+int isValidFunctionName(char value);
+
 const char* gl4es_find_string(const char* pBuffer, const char* S);
 char* gl4es_find_string_nc(char* pBuffer, const char* S);
 int gl4es_count_string(const char* pBuffer, const char* S);
 char* gl4es_resize_if_needed(char* pBuffer, int *size, int addsize);
 char* gl4es_inplace_replace(char* pBuffer, int* size, const char* S, const char* D);
+char * InplaceReplaceByIndex(char* pBuffer, int* size, int startIndex, int endIndex, const char* replacement);
+char * InplaceInsertByIndex(char * source, int *sourceLength, int insertPoint, const char *insertedString);
 char* gl4es_append(char* pBuffer, int* size, const char* S);
 char* gl4es_inplace_insert(char* pBuffer, const char* S, char* master, int* size);
 char* gl4es_getline(char* pBuffer, int num);

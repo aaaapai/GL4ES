@@ -335,6 +335,29 @@ Note that you can combine (logical or state. So 14 will be only Fragment shader 
 Note also that if neither Fragment and Vertex are defined, both will be selected. Same for Before and After.
 At last, the value "1" will be changed to "15", to log everything.
 
+##### LIBGL_VGPU_DUMP
+Log to the console all shaders before and after passing through the VGPU shader conversion pipeline
+* 0 : Default, don't log anything
+* 1 : Log every shader going though the pipeline
+
+##### LIBGL_VGPU_FORCE
+Force the vgpu shader conversion pipeline to convert every shader.
+* 0 : Default, don't convert #version 100 shaders
+* 1 : Convert every shader, regardless of the #version directive
+
+##### LIBGL_VGPU_PRECISION
+Override the precision used on the pipeline
+* 0 : Default, no changes are made
+* 1 : Force highp where possible
+* 2 : Force mediump where possible
+* 3 : Force lowp where possible
+Many drivers map lowp to the same precision as mediump
+
+##### LIBGL_VGPU_BACKPORT
+Whether the shader gets forcefully backported to the #version 100
+* 0 : Default, don't attempt to forcefully backport the shader
+* 1 : Try to forcefully backport the shader. The resulting shader might bug but it compiles.
+
 ##### LIBGL_NOPSA
 Disable the use of the Precompiled Shader Archive
 * 0 : Default: use (and save) the PSA (it's saved on $HOME/.gl4es.psa on linux)

@@ -22,12 +22,13 @@ static int comments = 1;
 
 #define ShadAppend(S) shad = gl4es_append(shad, &shad_cap, S)
 
+const char* texnoproj[] = {"texture2DProj", "texture2D", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
+
 //                           2D   Rectangle    3D   CubeMap  Stream
 const char* texvecsize[] = {"vec4", "vec2", "vec2", "vec3", "vec2"};
-const char* texxyzsize[] = {"stpq", "st",    "st",  "stp",   "st"};
+const char* texxyzsize[] = {"xyzw", "xy",    "xy",  "xyz",   "xy"};
 //                          2D              Rectangle      3D          CubeMap          Stream
 const char* texname[] = {"texture2DProj", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
-const char* texnoproj[] = {"texture2D", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
 const char* texsampler[] = {"sampler2D", "sampler2D", "sampler2D", "samplerCube", "samplerStreamIMG"};
 int texnsize[] = {2, 2, 3, 3, 2};
 const char texcoordname[] = {'s', 't', 'r', 'q'};
@@ -688,18 +689,16 @@ const char* const* fpe_VertexShader(shaderconv_need_t* need, fpe_state_t *state)
             } else {
                 sprintf(texcoord, "gl_MultiTexCoord%d", i);
             }
-            const char* text_tmp = texcoord;
-            static const char* tmp_tex = "tmp_tex";
             if(mat) {
-                text_tmp = tmp_tex;
-                sprintf(buff, "%s = (_gl4es_TextureMatrix_%d * %s);\n", text_tmp, i, texcoord);
+                // it would be better to use texture2Dproj in fragment shader, but that will complicate the varying definition...
+                sprintf(buff, "tmp_tex = (_gl4es_TextureMatrix_%d * %s);\n", i, texcoord);
                 ShadAppend(buff);
-            }
-            if(t==FPE_TEX_STRM) {
-                sprintf(buff, "_gl4es_TexCoord_%d = %s.%s / %s.q;\n", i, text_tmp, texxyzsize[t-1], text_tmp);
-            } else {
-                sprintf(buff, "_gl4es_TexCoord_%d = %s.%s;\n", i, text_tmp, texxyzsize[t-1]);
-            }
+
+                sprintf(buff, "_gl4es_TexCoord_%d = tmp_tex.%s / tmp_tex.q;\n", i, texxyzsize[t-1]);
+                //sprintf(buff, "_gl4es_TexCoord_%d = (_gl4es_TextureMatrix_%d * %s).%s;\n", i, i, texcoord, texxyzsize[t-1]);
+            } else
+                sprintf(buff, "_gl4es_TexCoord_%d = %s.%s / %s.q;\n", i, texcoord, texxyzsize[t-1], texcoord);
+
             ShadAppend(buff);
             if(adjust) {
                 need_adjust[i] = 1;
@@ -727,19 +726,19 @@ const char* const* fpe_VertexShader(shaderconv_need_t* need, fpe_state_t *state)
     }
     if(need_normal) {
 #if 0
-        if(state->rescaling)
+        //if(state->rescaling)
             strcpy(buff, "vec3 normal = gl_NormalScale*(gl_NormalMatrix * gl_Normal);\n");
-        else
-            strcpy(buff, "vec3 normal = gl_NormalMatrix * gl_Normal;\n");
-        if(state->normalize)
+        //else
+            //strcpy(buff, "vec3 normal = gl_NormalMatrix * gl_Normal;\n");
+        //if(state->normalize)
             strcat(buff, "normal = normalize(normal);\n");
 #else
 // Implementions may choose to normalize for rescale...
-        if(state->rescaling || state->normalize || globals4es.normalize)
+        //if(state->rescaling || state->normalize || globals4es.normalize)
             strcpy(buff, "vec3 normal = normalize(gl_NormalMatrix * gl_Normal);\n");
-        else
+        //else
             //strcpy(buff, "vec3 normal = (vec4(gl_Normal, (gl_Vertex.w==0.0)?0.0:(-dot(gl_Normal, gl_Vertex.xyz)/gl_Vertex.w))*gl_ModelViewMatrixInverse).xyz;\n");
-            strcpy(buff, "vec3 normal = gl_NormalMatrix * gl_Normal;\n");
+            //strcpy(buff, "vec3 normal = gl_NormalMatrix * gl_Normal;\n");
 #endif
         shad = gl4es_inplace_insert(gl4es_getline(shad, normal_line + headers), buff, shad, &shad_cap);
     }

@@ -79,16 +79,17 @@ LOCAL_SRC_FILES := \
 	src/gl/texture_3d.c \
 	src/gl/uniform.c \
 	src/gl/vertexattrib.c \
-        src/gl/host.c \
+  src/gl/host.c \
 	src/gl/wrap/gl4eswraps.c \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
-        src/egl/egl.c \
+  src/gl/vgpu/shaderconv.c \
+  src/egl/egl.c \
 	src/glx/glx_stubs.c \
 	src/glx/rpi.c \
 	src/glx/utils.c \
-        src/egl/lookup.c \
+  src/egl/lookup.c \
 	src/glx/hardext.c \
 	src/glx/glx.c \
 	src/glx/lookup.c \

@@ -19,6 +19,32 @@ static int tested = 0;
 
 hardext_t hardext = {0};
 
+int testGenericShader(struct shader_s* shader_source) {
+    // check the current shader is valid for compilation
+    LOAD_GLES2(glCreateShader);
+    LOAD_GLES2(glShaderSource);
+    LOAD_GLES2(glCompileShader);
+    LOAD_GLES2(glGetShaderiv);
+    LOAD_GLES2(glDeleteShader);
+
+    GLuint shad = gles_glCreateShader(shader_source->type);
+    gles_glShaderSource(shad, 1, (const GLchar *const *)(&shader_source->converted), NULL);
+    gles_glCompileShader(shad);
+    GLint compiled;
+    gles_glGetShaderiv(shad, GL_COMPILE_STATUS, &compiled);
+    /*
+    if(!compiled) {
+        LOAD_GLES2(glGetShaderInfoLog)
+        char buff[500];
+        gles_glGetShaderInfoLog(shad, 500, NULL, buff);
+        printf("LIBGL: \"%s\" failed, message:\n%s\n", version, buff);
+    }
+    */
+    gles_glDeleteShader(shad);
+
+    return compiled;
+}
+
 static int testGLSL(const char* version, int uniformLoc) {
     // check if glsl 120 shaders are supported... by compiling one !
     
@@ -432,17 +458,45 @@ void GetHardwareExtensions(int notest)
             hardext.glsl300es = 1;
         if(testGLSL("#version 310 es", 1))
             hardext.glsl310es = 1;
+        // VGPU SPECIFIC
+        if(testGLSL("#version 320 es", 1))
+            hardext.glsl320es = 1;
     }
     if(hardext.glsl120) {
         SHUT_LOGD("GLSL 120 supported and used\n");
     }
     if(hardext.glsl300es) {
         SHUT_LOGD("GLSL 300 es supported%s\n", (hardext.glsl120||hardext.glsl310es)?"":" and used");
+	    hardext.drawbuffers = 1;
     }
     if(hardext.glsl310es) {
         SHUT_LOGD("GLSL 310 es supported%s\n", hardext.glsl120?"":" and used");
+	    hardext.drawbuffers = 1;
+    }
+    // VGPU SPECIFIC
+    if(hardext.glsl320es) {
+        SHUT_LOGD("GLSL 320 es supported%s\n", hardext.glsl320es?"":" and used");
+	    hardext.drawbuffers = 1;
     }
 
+    if(!hardext.glsl300es){
+        // We can't use the vgpu forward conversion
+        globals4es.vgpu_backport = 1;
+    }
+	
+    if(hardext.drawbuffers) {
+        gles_glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT,&hardext.maxcolorattach);
+        gles_glGetIntegerv(GL_MAX_DRAW_BUFFERS_ARB, &hardext.maxdrawbuffers);
+    }
+    if(hardext.maxcolorattach<1)
+        hardext.maxcolorattach = 1;
+    if(hardext.maxcolorattach>MAX_DRAW_BUFFERS)
+        hardext.maxcolorattach=MAX_DRAW_BUFFERS;
+    if(hardext.maxdrawbuffers<1)
+        hardext.maxdrawbuffers = 1;
+    if(hardext.maxdrawbuffers>MAX_DRAW_BUFFERS)
+        hardext.maxdrawbuffers=MAX_DRAW_BUFFERS;
+    SHUT_LOGD("Max Color Attachments: %d / Draw buffers: %d\n", hardext.maxdrawbuffers, hardext.maxcolorattach);
 #ifndef NOEGL
     if(strstr(egl_eglQueryString(eglDisplay, EGL_EXTENSIONS), "EGL_KHR_gl_colorspace")) {
         SHUT_LOGD("sRGB surface supported\n");

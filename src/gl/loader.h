@@ -103,9 +103,9 @@ static void* dlsym(void* __restrict handle, const char* __restrict symbol)
 #include "../glx/hardext.h"
 extern void* (APIENTRY_GL4ES *gles_getProcAddress)(const char *name);
 extern void (APIENTRY_GL4ES *gl4es_getMainFBSize)(GLint* width, GLint* height);
-NonAliasExportDecl(void*,proc_address,(void *lib, const char *name));
+NonAliasExportDecl(void*,proc_address,(void *lib, const char *name __attribute__((visibility("default")))));
 // will become references to dlopen'd gles and egl
-extern void *gles, *bcm_host, *vcos, *gbm, *drm;
+extern void *gles, *egl __attribute__((visibility("default"))), *bcm_host, *vcos, *gbm, *drm;
 EXPORT extern void *egl;
 #if defined __APPLE__ || defined __EMSCRIPTEN__
 #define NO_LOADER
