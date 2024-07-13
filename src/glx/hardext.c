@@ -485,8 +485,8 @@ void GetHardwareExtensions(int notest)
     }
 	
     if(hardext.drawbuffers) {
-        gles_glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT,&hardext.maxcolorattach);
-        gles_glGetIntegerv(GL_MAX_DRAW_BUFFERS_ARB, &hardext.maxdrawbuffers);
+        gl4es_glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT,&hardext.maxcolorattach);
+        gl4es_glGetIntegerv(GL_MAX_DRAW_BUFFERS_ARB, &hardext.maxdrawbuffers);
     }
     if(hardext.maxcolorattach<1)
         hardext.maxcolorattach = 1;
