@@ -16,7 +16,7 @@ EXPORT void LogPrintf(const char *fmt,...);
 #else
 	#define SHUT_LOGD(...) if(!globals4es.nobanner) LogPrintf(__VA_ARGS__)
 	#define SHUT_LOGD_NOPREFIX(...) if(!globals4es.nobanner) LogPrintf_NoPrefix(__VA_ARGS__)
-	#define SHUT_LOGE(...) if(!globals4es.nobanner) LogFPrintf(stderr,__VA_ARGS__)
+	#define SHUT_LOGE(...) if(!globals4es.nobanner) LogPrintf(stderr,__VA_ARGS__)
 #endif
 //----------------------------------------------------------------------------
 #define LOGD(...) LogPrintf(__VA_ARGS__)
