@@ -83,7 +83,6 @@ LOCAL_SRC_FILES := \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
-        src/gl/host.c \
         src/egl/egl.c \
 	src/glx/glx_stubs.c \
 	src/glx/rpi.c \
