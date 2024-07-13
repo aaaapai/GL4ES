@@ -8,7 +8,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := gl4es_114_ptitseb
+LOCAL_MODULE := gl4es_ptitseb
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
@@ -83,40 +83,25 @@ LOCAL_SRC_FILES := \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
+        src/gl/host.c \
         src/gl/vgpu/shaderconv.c \
+        src/egl/egl.c \
+	src/glx/glx_stubs.c \
+	src/glx/rpi.c \
+	src/glx/utils.c \
+        src/egl/lookup.c \
 	src/glx/hardext.c \
 	src/glx/glx.c \
 	src/glx/lookup.c \
-	src/glx/gbm.c \
 	src/glx/streaming.c
-
-LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -Ofast -flto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -g -funwind-tables -Ofast -fvisibility=hidden -include include/android_debug.h
+LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -O3 -flto=auto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -std=gnu2x -funwind-tables -O3 -fvisibility=hidden -fno-semantic-interposition -include include/android_debug.h
 LOCAL_CFLAGS += -DNOX11
 LOCAL_CFLAGS += -DNO_GBM
-#LOCAL_CFLAGS += -DNO_INIT_CONSTRUCTOR
-LOCAL_CFLAGS += -DDEFAULT_ES=3
+LOCAL_CFLAGS += -DDEFAULT_ES=2
 //TODO: maybe temporary?
 LOCAL_CFLAGS += -Wno-typedef-redefinition -Wno-dangling-else
 
-LOCAL_LDLIBS := -llog
+LOCAL_LDLIBS := -ldl -llog -landroid -lEGL -lGLESv3
 #building as a static lib
-
-include $(BUILD_SHARED_LIBRARY)
-
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := gl4es_egl
-
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
-
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES) -DBCMHOST
-
-LOCAL_SRC_FILES := \
-	src/egl/egl.c \
-        src/egl/lookup.c
-
-LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -Ofast -flto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -g -funwind-tables -Ofast -fvisibility=hidden
-
-LOCAL_SHARED_LIBRARIES := gl4es_114_ptitseb
 
 include $(BUILD_SHARED_LIBRARY)
