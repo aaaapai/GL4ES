@@ -175,7 +175,7 @@ void initialize_gl4es() {
         break;
       default:
         // automatic ES backend selection
-        globals4es.es = DEFAULT_ES;
+        globals4es.es = 3;
         break;
     }
 
