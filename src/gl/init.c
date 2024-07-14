@@ -51,8 +51,6 @@ static void fast_math() {
 #define DEFAULT_ES 1
 #else
 #define DEFAULT_ES 2
-#else
-#define DEFAULT_ES 3
 #endif
 #endif
 
