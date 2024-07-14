@@ -79,17 +79,17 @@ LOCAL_SRC_FILES := \
 	src/gl/texture_3d.c \
 	src/gl/uniform.c \
 	src/gl/vertexattrib.c \
-  src/gl/host.c \
+        src/gl/host.c \
 	src/gl/wrap/gl4eswraps.c \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
-  src/gl/vgpu/shaderconv.c \
-  src/egl/egl.c \
+        src/gl/vgpu/shaderconv.c \
+        src/egl/egl.c \
 	src/glx/glx_stubs.c \
 	src/glx/rpi.c \
 	src/glx/utils.c \
-  src/egl/lookup.c \
+        src/egl/lookup.c \
 	src/glx/hardext.c \
 	src/glx/glx.c \
 	src/glx/lookup.c \
@@ -98,13 +98,13 @@ LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -O3 -flto=auto -mllvm -p
 LOCAL_CFLAGS += -DNO_INIT_CONSTRUCTOR
 LOCAL_CFLAGS += -DNOX11
 LOCAL_CFLAGS += -DNO_GBM
-LOCAL_CFLAGS += -DDEFAULT_ES=3
+LOCAL_CFLAGS += -DDEFAULT_ES=2
 //TODO: maybe temporary?
 LOCAL_CFLAGS += -Wno-typedef-redefinition -Wno-dangling-else
 LOCAL_CFLAGS += -Dasm=__asm__ -Dvolatile=__volatile__
 LOCAL_CFLAGS += -include include/gl4esinit.h
 
 LOCAL_LDLIBS := -ldl -llog -landroid -lEGL -lGLESv3
-#building as a static lib
+#building as a share lib
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_SHAEAR_LIBRARY)
