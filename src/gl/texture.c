@@ -175,7 +175,7 @@ void internal2format_type(GLenum internalformat, GLenum *format, GLenum *type)
             break;
         case GL_RGBA32F:
             *format = GL_RGBA;
-            *type = (hardext.floattex)?GL_FLOAT:GL_UNSIGNED_BYTE;
+                        *type = (hardext.halffloattex)?GL_HALF_FLOAT_OES:GL_UNSIGNED_BYTE;
             break;
         case GL_RGB16F:
             *format = GL_RGB;
