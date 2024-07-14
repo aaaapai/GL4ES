@@ -85,9 +85,6 @@ LOCAL_SRC_FILES := \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
         src/gl/vgpu/shaderconv.c \
-        src/gl/vgpu/pack/pack.c \
-	src/gl/vgpu/pack/load.c \
-	src/gl/vgpu/pack/Initialization.c \
         src/egl/egl.c \
 	src/glx/glx_stubs.c \
 	src/glx/rpi.c \
