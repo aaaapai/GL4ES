@@ -101,7 +101,6 @@ LOCAL_CFLAGS += -DNO_GBM
 LOCAL_CFLAGS += -DDEFAULT_ES=2
 //TODO: maybe temporary?
 LOCAL_CFLAGS += -Wno-typedef-redefinition -Wno-dangling-else
-LOCAL_CFLAGS += -Dasm=__asm__ -Dvolatile=__volatile__
 LOCAL_CFLAGS += -include include/gl4esinit.h
 
 LOCAL_LDLIBS := -ldl -llog -landroid -lEGL -lGLESv3
