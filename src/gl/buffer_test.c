@@ -1,4 +1,6 @@
 #include "const.h"
+#include "gles.h"
+
 void gl4es_glBindBuffer();
 void gl4es_glCopyBufferSubData();
 
