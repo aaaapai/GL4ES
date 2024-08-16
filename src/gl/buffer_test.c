@@ -1,8 +1,16 @@
-#include "const.h"
-#include "gles.h"
+#include "buffers.h"
 
-void gl4es_glBindBuffer();
-void gl4es_glCopyBufferSubData();
+#include "../glx/hardext.h"
+#include "attributes.h"
+#include "debug.h"
+#include "gl4es.h"
+#include "glstate.h"
+#include "logs.h"
+#include "init.h"
+#include "loader.h"
+
+#define GL_COPY_READ_BUFFER               0x8F36
+#define GL_COPY_WRITE_BUFFER              0x8F37
 
 void gl4es_buffer_copy(GLenum target, GLuint buffer, GLuint buffer, GLintptr writeOffset, GLintptr readOffset, GLsizeiptr size)
 {
