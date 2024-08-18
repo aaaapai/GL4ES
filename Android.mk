@@ -84,7 +84,6 @@ LOCAL_SRC_FILES := \
 	src/gl/wrap/gles.c \
 	src/gl/wrap/glstub.c \
 	src/gl/math/matheval.c \
-        src/gl/buffer_test.c \
         src/gl/vgpu/shaderconv.c \
         src/egl/egl.c \
 	src/glx/glx_stubs.c \
