@@ -80,6 +80,7 @@ LOCAL_CFLAGS += -DNOX11
 LOCAL_CFLAGS += -DNO_GBM
 #LOCAL_CFLAGS += -DNO_INIT_CONSTRUCTOR
 LOCAL_CFLAGS += -DDEFAULT_ES=2
+LOCAL_CFLAGS += -Wno-typedef-redefinition -Wno-dangling-else
 
 LOCAL_LDLIBS := -ldl -llog
 
