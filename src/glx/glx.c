@@ -55,6 +55,9 @@
 #define EGL_GL_COLORSPACE_LINEAR_KHR            0x308A
 #endif
 
+static void delPBuffer(int j);
+static int isPBuffer(GLXDrawable drawable);
+
 #ifndef NOEGL
 static bool eglInitialized = false;
 static EGLDisplay eglDisplay = NULL;
