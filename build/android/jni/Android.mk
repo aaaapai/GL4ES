@@ -7,4 +7,9 @@ GL_SRC_FILES := $(wildcard $(LOCAL_PATH)/gl/*.c) $(wildcard $(LOCAL_PATH)/gl/wra
 LOCAL_SRC_FILES := $(GL_SRC_FILES:$(LOCAL_PATH)/%=%)
 $(info $(LOCAL_SRC_FILES))
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../include $(LOCAL_PATH)/util
+APP_CPPFLAGS += -std=c++11
+LOCAL_CFLAGS += -Wno-typedef-redefinition -Wno-dangling-else -std=gnu99
+LOCAL_CFLAGS += -DANDROID -pipe -integrated-as -fno-plt -O3 -flto=auto -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting -mllvm -polly-run-inliner -mllvm -polly-run-dce -funwind-tables -O3 -fvisibility=hidden -fno-semantic-interposition
+LOCAL_CFLAGS += -DNOX11
+LOCAL_CFLAGS += -DNO_GBM
 include $(BUILD_SHARED_LIBRARY)
