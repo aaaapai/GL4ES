@@ -10,7 +10,10 @@ jobs:
       uses: actions/checkout@main
 
     - name: Build with CI build script
-      run: 'cd build/android && $ANDROID_SDK_ROOT/ndk-bundle/ndk-build'
+      run: |
+           cd build/android
+           $ANDROID_NDK_LATEST_HOME/ndk-build -j4 APP_PLATFORM=android-24 APP_BUILD_SCRIPT=./jni/Android.mk NDK_APPLICATION_MK=./jni/Application.mk NDK_PROJECT_PATH=.
+           $ANDROID_NDK_LATEST_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip libs/*/libglshim.so
 
     - name: Upload build output
       uses: actions/upload-artifact@main
