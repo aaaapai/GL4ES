@@ -1,3 +1,8 @@
+#include <egl.h>
+#include <../gl/gl.h>
+#include <GL/gl.h>
+#include <GLES/gl.h>
+#include <GLES/gl3.h>
 
 #define MAP(func_name, func) \
     if (strcmp(name, func_name) == 0) return (void *)func;
