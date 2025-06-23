@@ -5,8 +5,6 @@
 #include <EGL/egl.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -129,12 +127,10 @@
 typedef int GLXDrawable;
 
 struct __GLXContextRec {
-    Display *display;
     GLXDrawable drawable;
     unsigned char direct;
     int currentWritable;
     int currentReadable;
-    XID xid;
 	EGLSurface eglSurface;
 	EGLConfig eglConfigs[1];
 	EGLContext eglContext;
@@ -227,7 +223,6 @@ void glXSwapBuffers(Display *display, int drawable);
 void glXUseXFont(Font font, int first, int count, int listBase);
 void glXWaitGL();
 void glXWaitX();
-XVisualInfo *glXChooseVisual(Display *display, int screen, int *attributes);
 int glXQueryDrawable(Display *dpy, GLXDrawable draw, int attribute,	unsigned int *value);
 
 // GLX 1.2
@@ -235,7 +230,6 @@ Display *glXGetCurrentDisplay();
 
 // GLX 1.3
 GLXContext glXGetCurrentContext();
-XVisualInfo *glXGetVisualFromFBConfig(Display *display, GLXFBConfig config);
 GLXFBConfig *glXChooseFBConfig(Display *display, int screen, const int *attrib_list, int *count);
 GLXFBConfig *glXGetFBConfigs(Display *display, int screen, int *count);
 int glXGetFBConfigAttrib(Display *display, GLXFBConfig config, int attribute, int *value);
