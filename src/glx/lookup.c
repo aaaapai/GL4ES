@@ -1,4 +1,4 @@
-#include <egl.h>
+#include <EGL/egl.h>
 #include <../gl/gl.h>
 #include <GL/gl.h>
 #include <GLES/gl.h>
