@@ -1,4 +1,6 @@
 #include "glx.h"
+#include <GL/gl.h>
+#include <GLES/gl.h>
 
 #define MAP(func_name, func) \
     if (strcmp(name, func_name) == 0) return (void *)func;
@@ -21,7 +23,7 @@
 void glXStub(void *x, ...) {
     return;
 }
-
+void *glXGetProcAddressARB(const char *name) __attribute__((visibility("default")));
 void *glXGetProcAddressARB(const char *name) {
     // generated gles wrappers
 #ifdef USE_ES2
@@ -359,6 +361,7 @@ void *glXGetProcAddressARB(const char *name) {
     return NULL;
 }
 
+void *glXGetProcAddress(const char *name)  __attribute__((visibility("default")));
 void *glXGetProcAddress(const char *name) {
     return glXGetProcAddressARB(name);
 }
