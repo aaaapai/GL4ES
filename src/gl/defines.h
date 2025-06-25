@@ -1,5 +1,8 @@
 #include <GL/gl.h>
 
+#define GLAPI __attribute__((visibility("default")))
+#define GLAPIENTRY
+
 // newly-defined GL functions
 GLAPI GLboolean glIsList(GLuint list);
 GLAPI GLuint glGenLists(GLsizei range);
