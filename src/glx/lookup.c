@@ -2,7 +2,6 @@
 #include <GL/gl.h>
 #include <GLES/gl.h>
 #include <GLES/gl2.h>
-#include <../gl/wrap/gles.h>
 #include "glx.h"
 
 
