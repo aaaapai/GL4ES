@@ -1,5 +1,5 @@
 #include "../gl/attributes.h"
-
+#include <GL/gl.h>
 #include "glx.h"
 
 
