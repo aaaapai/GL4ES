@@ -51,26 +51,8 @@
 #define __WIN32__
 #endif
 
-#if !defined(OPENSTEP) && (defined(__WIN32__) && !defined(__CYGWIN__))
-#  if (defined(_MSC_VER) || defined(__MINGW32__)) && defined(BUILD_GL32) /* tag specify we're building mesa as a DLL */
-#    define GLAPI __declspec(dllexport)
-#  elif (defined(_MSC_VER) || defined(__MINGW32__)) && defined(_DLL) /* tag specifying we're building for DLL runtime support */
-#    define GLAPI __declspec(dllimport)
-#  else /* for use with static link lib build of Win32 edition only */
-#    define GLAPI extern
-#  endif /* _STATIC_MESA support */
-#  if defined(__MINGW32__) && defined(GL_NO_STDCALL) || defined(UNDER_CE)  /* The generated DLLs by MingW with STDCALL are not compatible with the ones done by Microsoft's compilers */
-#    define GLAPIENTRY 
-#  else
-#    define GLAPIENTRY __stdcall
-#  endif
-#elif defined(__CYGWIN__) && defined(USE_OPENGL32) /* use native windows opengl32 */
-#  define GLAPI extern
-#  define GLAPIENTRY __stdcall
-#elif defined(__GNUC__)	|| (defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590))
-#  define GLAPI __attribute__((visibility("default")))
-#  define GLAPIENTRY
-#endif /* WIN32 && !CYGWIN */
+#define GLAPI __attribute__((visibility("default")))
+#define GLAPIENTRY
 
 #if (defined(__BEOS__) && defined(__POWERPC__)) || defined(__QUICKDRAW__)
 #  define PRAGMA_EXPORT_SUPPORTED		1
