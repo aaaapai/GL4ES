@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)/../../../src
 $(info $(LOCAL_PATH))
 include $(CLEAR_VARS)  
-LOCAL_LDLIBS := -ldl -lm -lc
+LOCAL_LDLIBS := -ldl -lm -lc -lEGL
 LOCAL_MODULE    := glshim
 GL_SRC_FILES := $(wildcard $(LOCAL_PATH)/glx/*.c) $(wildcard $(LOCAL_PATH)/gl/*.c) $(wildcard $(LOCAL_PATH)/gl/wrap/*.c) $(wildcard $(LOCAL_PATH)/gl/math/*.c)
 LOCAL_SRC_FILES := $(GL_SRC_FILES:$(LOCAL_PATH)/%=%)
