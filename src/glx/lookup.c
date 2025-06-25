@@ -51,8 +51,6 @@ void *glXGetProcAddressARB(const char *name) {
     EX(glXQueryServerString);
     EX(glXSwapBuffers);
     EX(glXSwapIntervalEXT);
-    EX(glXSwapIntervalMESA);
-    EX(glXSwapIntervalSGI);
     EX(glXUseXFont);
     EX(glXWaitGL);
     EX(glXWaitX);
