@@ -35,7 +35,7 @@ void *glXGetProcAddressARB(const char *name) {
     void* proc = dlsym(RTLD_DEFAULT, (const char*)name);
 
     if (!proc) {
-            return nullptr;
+            return NULL;
     }
     return proc;
 	
