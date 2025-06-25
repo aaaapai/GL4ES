@@ -4,7 +4,6 @@
 #include "../gl/gl_lookup.h"
 
 #include "glx.h"
-#include "hardext.h"
 
 
 void glXStub(void *x, ...) {
