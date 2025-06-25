@@ -1,77 +1,80 @@
-#include <EGL/egl.h>
-#include <../gl/gl.h>
-#include <GL/gl.h>
+#include "../gl/attributes.h"
+#include "../gl/init.h"
+#include "../gl/logs.h"
 
-#define MAP(func_name, func) \
-    if (strcmp(name, func_name) == 0) return (void *)func;
+#define STUB_FCT glXStub
+#include "../gl/gl_lookup.h"
 
-#define MAP_EGL(func_name, egl_func) \
-    MAP(#func_name, eglGetProcAddress(#egl_func))
+#include "glx.h"
+#include "hardext.h"
 
-#define EX(func_name) MAP(#func_name, func_name)
-
-#define ARB(func_name) MAP(#func_name "ARB", func_name)
-
-#define EXT(func_name) MAP(#func_name "EXT", func_name)
-
-#define STUB(func_name)                       \
-    if (strcmp(name, #func_name) == 0) {      \
-        printf("glX stub: %s\n", #func_name); \
-        return (void *)glXStub;               \
-    }
 
 void glXStub(void *x, ...) {
     return;
 }
+void *gl4es_glXGetProcAddress(const char *name) __attribute__((visibility("default")));
+void *gl4es_glXGetProcAddress(const char *name) {
 
-void *glXGetProcAddressARB(const char *name) {
-    // generated gles wrappers
-#ifdef USE_ES2
-    #include "gles2funcs.inc"
-#else
-    #include "glesfuncs.inc"
+#if !defined(NOX11) || defined(GLX_STUBS)
+    // glX calls
+    _EX(glXChooseVisual);
+    _EX(glXCopyContext);
+    _EX(glXCreateContext);
+    _EX(glXCreateNewContext);
+    _EX(glXCreateContextAttribsARB);
+    _EX(glXDestroyContext);
+    _EX(glXGetConfig);
+    _EX(glXGetCurrentDisplay);
+    _EX(glXGetCurrentDrawable);
+    _EX(glXIsDirect);
+    _EX(glXMakeCurrent);
+    _EX(glXMakeContextCurrent);
+    _EX(glXQueryExtensionsString);
+    _EX(glXQueryServerString);
+    _EX(glXSwapBuffers);
+    _EX(glXSwapIntervalEXT);
 #endif
+    MAP("glXSwapIntervalMESA", gl4es_glXSwapInterval);
+    MAP("glXSwapIntervalSGI", gl4es_glXSwapInterval);
+#if !defined(NOX11) || defined(GLX_STUBS)
+    _EX(glXUseXFont);
+    _EX(glXWaitGL);
+    _EX(glXWaitX);
+    _EX(glXGetCurrentContext);
+    _EX(glXQueryExtension);
+    _EX(glXQueryDrawable);
+    _EX(glXQueryVersion);
+    _EX(glXGetClientString);
+    _EX(glXGetFBConfigs);
+    _EX(glXChooseFBConfig);
+    MAP("glXChooseFBConfigSGIX", gl4es_glXChooseFBConfig);
+    _EX(glXGetFBConfigAttrib);
+    _EX(glXQueryContext);
+    _EX(glXGetVisualFromFBConfig);
+    _EX(glXCreateWindow);
+    _EX(glXDestroyWindow);
+    
+    _EX(glXCreatePbuffer);
+    _EX(glXDestroyPbuffer);
+    _EX(glXCreatePixmap);
+    _EX(glXDestroyPixmap);
+    _EX(glXCreateGLXPixmap);
+    _EX(glXDestroyGLXPixmap);
+    STUB(glXGetCurrentReadDrawable);
+    STUB(glXGetSelectedEvent);
+    STUB(glXSelectEvent);
+    
+    _EX(glXCreateContextAttribs);
+    _ARB(glXCreateContextAttribs);
+#endif
+    _EX(glXGetProcAddress);
+    _ARB(glXGetProcAddress);
 
-    void* proc = dlsym(RTLD_DEFAULT, (const char*)name);
-
-    if (!proc) {
-            return NULL;
-    }
-    return proc;
-	
-    // stubs for unimplemented functions
-    STUB(glAccum);
-    STUB(glAreTexturesResident);
-    STUB(glClearAccum);
-    STUB(glColorMaterial);
-    STUB(glCopyTexImage3D);
-    STUB(glCopyTexSubImage3D);
-    STUB(glEdgeFlagPointer);
-    STUB(glFeedbackBuffer);
-    STUB(glGetClipPlane);
-    STUB(glGetLightiv);
-    STUB(glGetMaterialiv);
-    STUB(glGetPixelMapfv);
-    STUB(glGetPixelMapuiv);
-    STUB(glGetPixelMapusv);
-    STUB(glGetPolygonStipple);
-    STUB(glGetStringi);
-    STUB(glGetTexGendv);
-    //STUB(glGetTexGenfv);
-    STUB(glGetTexGeniv);
-    STUB(glMaterialiv);
-    STUB(glPassThrough);
-    STUB(glPixelMapfv);
-    STUB(glPixelMapuiv);
-    STUB(glPixelMapusv);
-    STUB(glPixelStoref);
-    STUB(glPrioritizeTextures);
-    STUB(glSelectBuffer);
-    //STUB(glTexSubImage1D);
-
-    return NULL;
+    return gl4es_GetProcAddress(name);
 }
-
-void *glXGetProcAddress(const char *name) {
-    return glXGetProcAddressARB(name);
-}
+#ifdef AMIGAOS4
+//AliasExport(void*,aglGetProcAddress,,(const char* name));
+#else
+AliasExport(void*,glXGetProcAddress,,(const char* name));
+AliasExport(void*,glXGetProcAddress,ARB,(const char* name));
+#endif
