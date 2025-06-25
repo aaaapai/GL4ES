@@ -8,6 +8,9 @@
 #ifndef GLESWRAP_H
 #define GLESWRAP_H
 
+#include <GL/gl.h>
+#include <GLES/gl.h>
+
 typedef struct {
     int format;
     void *func;
