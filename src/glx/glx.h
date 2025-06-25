@@ -5,7 +5,6 @@
 #include <EGL/egl.h>
 #endif
 
-#include <EGL/egl.h>
 #include <GLES/gl.h>
 #include <GL/gl.h>
 
