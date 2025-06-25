@@ -1,8 +1,5 @@
 #include "../gl/attributes.h"
 
-#define STUB_FCT glXStub
-#include "../gl/gl_lookup.h"
-
 #include "glx.h"
 
 
