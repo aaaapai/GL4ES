@@ -42,6 +42,12 @@ void glXStub(void *x, ...) {
 void *glXGetProcAddress(const char *name) __attribute__((visibility("default")));
 void *glXGetProcAddress(const char *name) {
 
+#ifdef USE_ES2
+    #include "gles2funcs.inc"
+#else
+    #include "glesfuncs.inc"
+#endif
+	
     EXT(glArrayElement);
     EXT(glDrawArrays);
     EXT(glVertexPointer);
