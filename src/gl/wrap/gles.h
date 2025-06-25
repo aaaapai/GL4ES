@@ -1,4 +1,7 @@
 #ifndef USE_ES2
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GL/gl.h>
 #include "../gl.h"
 
 #ifndef GLESWRAP_H
