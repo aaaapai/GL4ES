@@ -1,7 +1,6 @@
 #include "../gl/attributes.h"
-#include <GL/gl.h>
 #include <GLES/gl.h>
-#include <GLES/gl2.h>
+#include <GL/gl.h>
 #include "glx.h"
 
 
