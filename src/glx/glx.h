@@ -4,6 +4,11 @@
 #ifndef NOEGL
 #include <EGL/egl.h>
 #endif
+
+#include <EGL/egl.h>
+#include <GLES/gl.h>
+#include <GL/gl.h>
+
 #include <stdbool.h>
 #include <stdlib.h>
 #ifndef NOX11
