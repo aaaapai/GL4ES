@@ -16,6 +16,8 @@ typedef int Bool;
 #include <stdio.h>
 #include <string.h>
 
+#define GLX_STUBS 1
+
 // defines yoinked from Mesa glx.h
 #define GLX_VERSION_1_1     1
 #define GLX_VERSION_1_2     1
