@@ -12,7 +12,7 @@ glstate_t state = {.color = {1.0f, 1.0f, 1.0f, 1.0f},
 void* gles = NULL;
 
 // config functions
-GLAPI const GLubyte *glGetString(GLenum name) {
+const GLubyte *glGetString(GLenum name) {
     LOAD_GLES(glGetString);
 	if (gles_glGetString(name)==NULL)
 		printf("**warning** glGetString(%i) called with bad init\n", name);
@@ -77,7 +77,7 @@ extern float zoomx, zoomy;
 extern GLfloat raster_scale[4];
 extern GLfloat raster_bias[4];
 
-GLAPI void glGetIntegerv(GLenum pname, GLint *params) {
+void glGetIntegerv(GLenum pname, GLint *params) {
 	GLint dummy;
     LOAD_GLES(glGetIntegerv);
     switch (pname) {
