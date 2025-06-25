@@ -14,6 +14,9 @@
     if (strcmp(name, func_name) == 0) return (void *)func;
 #endif
 
+#define MAP_EGL(func_name, egl_func) \
+    MAP(#func_name, eglGetProcAddress(#egl_func))
+
 #define EX(func_name) MAP(#func_name, func_name)
 
 #define ARB(func_name) MAP(#func_name "ARB", func_name)
