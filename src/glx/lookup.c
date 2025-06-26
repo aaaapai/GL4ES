@@ -30,37 +30,6 @@ void *glXGetProcAddressARB(const char *name) {
     #include "glesfuncs.inc"
 #endif
 
-    // glX calls
-    EX(glXChooseVisual);
-    EX(glXCopyContext);
-    EX(glXCreateContext);
-	EX(glXCreateContextAttribsARB);
-    EX(glXCreateGLXPixmap);
-    EX(glXDestroyContext);
-    EX(glXDestroyGLXPixmap);
-    EX(glXGetConfig);
-    EX(glXGetCurrentDisplay);
-    EX(glXGetCurrentDrawable);
-    EX(glXIsDirect);
-    EX(glXMakeCurrent);
-    EX(glXQueryExtensionsString);
-    EX(glXQueryServerString);
-    EX(glXSwapBuffers);
-    EX(glXSwapIntervalEXT);
-    EX(glXUseXFont);
-    EX(glXWaitGL);
-    EX(glXWaitX);
-    EX(glXGetCurrentContext);
-    EX(glXQueryExtension);
-    EX(glXQueryDrawable);
-    EX(glXQueryVersion);
-    EX(glXGetClientString);
-    EX(glXGetFBConfigs);
-    EX(glXChooseFBConfig);
-    EX(glXGetFBConfigAttrib);
-    EX(glXGetVisualFromFBConfig);
-    EX(glXCreateWindow);
-    EX(glXDestroyWindow);
 
     // GL_ARB_vertex_buffer_object
 
