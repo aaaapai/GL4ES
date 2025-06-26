@@ -24,10 +24,6 @@
 #ifdef AMIGAOS4
 #include "../agl/amigaos.h"
 #endif // AMIGAOS4
-#include "../gl/debug.h"
-#include "../gl/framebuffers.h"
-#include "../gl/init.h"
-#include "../gl/loader.h"
 #ifdef PANDORA
 #include "../gl/pixel.h"
 #endif
