@@ -5,7 +5,7 @@
 #include <EGL/egl.h>
 #endif
 
-#include <GLES/gl.h>
+#include <../gl/gl.h>
 #include <GL/gl.h>
 
 #include <stdbool.h>
