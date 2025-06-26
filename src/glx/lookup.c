@@ -1,8 +1,4 @@
 #include "glx.h"
-#include <../gl/gl.h>
-#include <EGL/egl.h>
-#include <GL/gl.h>
-#include <GLES/gl.h>
 
 #define MAP(func_name, func) \
     if (strcmp(name, func_name) == 0) return (void *)func;
