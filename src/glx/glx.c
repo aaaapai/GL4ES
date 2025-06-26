@@ -1,11 +1,10 @@
 #include "glx.h"
-#include "../gl/init.h"
 
 #ifdef HAS_BACKTRACE
 #include <execinfo.h>
 #endif // HAS_BACKTRACE
 #include <fcntl.h>
-#include "khash.h"
+#include "../util/khash.h"
 #ifdef USE_FBIO
 #include <linux/fb.h>
 #endif // USE_FBIO
@@ -32,11 +31,6 @@
 #ifdef PANDORA
 #include "../gl/pixel.h"
 #endif
-#include "glx_gbm.h"
-#include "hardext.h"
-#include "streaming.h"
-#include "utils.h"
-#include "../gl/envvars.h"
 
 //#define DEBUG
 #ifdef DEBUG
