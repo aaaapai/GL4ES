@@ -171,7 +171,7 @@ void glGetIntegerv(GLenum pname, GLint *params) {
     }
 }
 
-GLAPI void glGetFloatv(GLenum pname, GLfloat *params) {
+void glGetFloatv(GLenum pname, GLfloat *params) {
     LOAD_GLES(glGetFloatv);
     switch (pname) {
         case GL_MAX_ELEMENTS_INDICES:
@@ -312,14 +312,14 @@ static void proxy_glEnable(GLenum cap, bool enable, void (*next)(GLenum)) {
     #undef enable
 }
 
-GLAPI void glEnable(GLenum cap) {
+void glEnable(GLenum cap) {
 	PUSH_IF_COMPILING(glEnable)
         
     LOAD_GLES(glEnable);
     proxy_glEnable(cap, true, gles_glEnable);
 }
 
-GLAPI void glDisable(GLenum cap) {
+void glDisable(GLenum cap) {
 	PUSH_IF_COMPILING(glDisable)
         
     LOAD_GLES(glDisable);
@@ -327,18 +327,18 @@ GLAPI void glDisable(GLenum cap) {
 }
 
 #ifndef USE_ES2
-GLAPI void glEnableClientState(GLenum cap) {
+void glEnableClientState(GLenum cap) {
     LOAD_GLES(glEnableClientState);
     proxy_glEnable(cap, true, gles_glEnableClientState);
 }
 
-GLAPI void glDisableClientState(GLenum cap) {
+void glDisableClientState(GLenum cap) {
     LOAD_GLES(glDisableClientState);
     proxy_glEnable(cap, false, gles_glDisableClientState);
 }
 #endif
 
-GLAPI GLboolean glIsEnabled(GLenum cap) {
+GLboolean glIsEnabled(GLenum cap) {
     LOAD_GLES(glIsEnabled);
     switch (cap) {
         case GL_LINE_STIPPLE:
@@ -404,7 +404,7 @@ static inline bool should_intercept_render(GLenum mode) {
     );
 }
 
-GLAPI void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *uindices) {
+void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *uindices) {
     // TODO: split for count > 65535?
     GLushort *indices = copy_gl_array(uindices, type, 1, 0, GL_UNSIGNED_SHORT, 1, 0, count);
     bool compiling = (state.list.active && state.list.compiling);
@@ -503,7 +503,7 @@ GLAPI void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid 
     }
 }
 
-GLAPI void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
+void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
     renderlist_t *list, *active = state.list.active;
     if (active && state.list.compiling) {
 	NewStage(state.list.active, STAGE_DRAW);
@@ -593,32 +593,32 @@ GLAPI void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
 #ifndef USE_ES2
 #define clone_gl_pointer(t, s)\
     t.size = s; t.type = type; t.stride = stride; t.pointer = pointer;
-GLAPI void glVertexPointer(GLint size, GLenum type,
+void glVertexPointer(GLint size, GLenum type,
                      GLsizei stride, const GLvoid *pointer) {
     LOAD_GLES(glVertexPointer);
 	clone_gl_pointer(state.pointers.vertex, size);
     glGetError();
     gles_glVertexPointer(size, type, stride, pointer);
 }
-GLAPI void glColorPointer(GLint size, GLenum type,
+void glColorPointer(GLint size, GLenum type,
                      GLsizei stride, const GLvoid *pointer) {
     LOAD_GLES(glColorPointer);
     clone_gl_pointer(state.pointers.color, size);
     gles_glColorPointer(size, type, stride, pointer);
 }
-GLAPI void glNormalPointer(GLenum type, GLsizei stride, const GLvoid *pointer) {
+void glNormalPointer(GLenum type, GLsizei stride, const GLvoid *pointer) {
     LOAD_GLES(glNormalPointer);
     clone_gl_pointer(state.pointers.normal, 3);
     gles_glNormalPointer(type, stride, pointer);
 }
-GLAPI void glTexCoordPointer(GLint size, GLenum type,
+void glTexCoordPointer(GLint size, GLenum type,
                      GLsizei stride, const GLvoid *pointer) {
 //if ((state.texture.client>0) && (state.list.active)) printf("glTexCoordPointer(%i, 0x%04X, %i, %p), texture=%i, inside list\n", size, type, stride, pointer, state.texture.client);
     LOAD_GLES(glTexCoordPointer);
     clone_gl_pointer(state.pointers.tex_coord[state.texture.client], size);
     gles_glTexCoordPointer(size, type, stride, pointer);
 }
-GLAPI void glSecondaryColorPointer(GLint size, GLenum type, 
+void glSecondaryColorPointer(GLint size, GLenum type, 
 					GLsizei stride, const GLvoid *pointer) {
 //printf("glSecondaryColorPointer(%i, 0x%04X, %i, %p)\n", size, type, stride, pointer);
 	if (size!=3)
@@ -629,7 +629,7 @@ GLAPI void glSecondaryColorPointer(GLint size, GLenum type,
 #undef clone_gl_pointer
 #endif
 
-GLAPI void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer) {
+void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *pointer) {
     uintptr_t ptr = (uintptr_t)pointer;
     // element lengths
     GLsizei tex=0, color=0, normal=0, vert=0;
@@ -723,7 +723,7 @@ GLAPI void glInterleavedArrays(GLenum format, GLsizei stride, const GLvoid *poin
 }
 
 // immediate mode functions
-GLAPI void glBegin(GLenum mode) {
+void glBegin(GLenum mode) {
     if (! state.list.active)
         state.list.active = alloc_renderlist();
     NewStage(state.list.active, STAGE_DRAW);
@@ -731,7 +731,7 @@ GLAPI void glBegin(GLenum mode) {
     state.list.active->mode_init = mode;
 }
 
-GLAPI void glEnd() {
+void glEnd() {
     if (! state.list.active) return;
     // check if TEXTUREx is activate and no TexCoord, in that cas, create a dummy one base on state...
     for (int a=0; a<MAX_TEX; a++)
@@ -749,7 +749,7 @@ GLAPI void glEnd() {
     }
 }
 
-GLAPI void glNormal3f(GLfloat nx, GLfloat ny, GLfloat nz) {
+void glNormal3f(GLfloat nx, GLfloat ny, GLfloat nz) {
     if (state.list.active) {
 	if (state.list.active->stage != STAGE_DRAW) {
 	    PUSH_IF_COMPILING(glNormal3f);
@@ -764,13 +764,13 @@ GLAPI void glNormal3f(GLfloat nx, GLfloat ny, GLfloat nz) {
 #endif
 }
 
-GLAPI void glVertex3f(GLfloat x, GLfloat y, GLfloat z) {
+void glVertex3f(GLfloat x, GLfloat y, GLfloat z) {
     if (state.list.active) {
         rlVertex3f(state.list.active, x, y, z);
     }
 }
 
-GLAPI void glColor4f(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+void glColor4f(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
     if (state.list.active) {
 	if (state.list.active->stage != STAGE_DRAW) {
 	    PUSH_IF_COMPILING(glColor4f);
@@ -787,7 +787,7 @@ GLAPI void glColor4f(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
 #endif
 }
 
-GLAPI void glSecondaryColor3f(GLfloat r, GLfloat g, GLfloat b) {
+void glSecondaryColor3f(GLfloat r, GLfloat g, GLfloat b) {
     if (state.list.active) {
         rlSecondary3f(state.list.active, r, g, b);
     } else {
@@ -797,7 +797,7 @@ GLAPI void glSecondaryColor3f(GLfloat r, GLfloat g, GLfloat b) {
 }
 
 #ifndef USE_ES2
-GLAPI void glMaterialfv(GLenum face, GLenum pname, const GLfloat *params) {
+void glMaterialfv(GLenum face, GLenum pname, const GLfloat *params) {
     LOAD_GLES(glMaterialfv);
     if (state.list.compiling && state.list.active) {
 		//TODO: Materialfv can be done per vertex, how to handle that ?!
@@ -810,7 +810,7 @@ GLAPI void glMaterialfv(GLenum face, GLenum pname, const GLfloat *params) {
         gles_glMaterialfv(face, pname, params);
     }
 }
-GLAPI void glMaterialf(GLenum face, GLenum pname, const GLfloat param) {
+void glMaterialf(GLenum face, GLenum pname, const GLfloat param) {
     LOAD_GLES(glMaterialf);
     if (state.list.compiling && state.list.active) {
 		GLfloat params[4];
@@ -827,7 +827,7 @@ GLAPI void glMaterialf(GLenum face, GLenum pname, const GLfloat param) {
 }
 #endif
 
-GLAPI void glTexCoord2f(GLfloat s, GLfloat t) {
+void glTexCoord2f(GLfloat s, GLfloat t) {
     if (state.list.active) {
         rlTexCoord2f(state.list.active, s, t);
     } else {
@@ -835,14 +835,14 @@ GLAPI void glTexCoord2f(GLfloat s, GLfloat t) {
     }
 }
 
-GLAPI void glMultiTexCoord2f(GLenum target, GLfloat s, GLfloat t) {
+void glMultiTexCoord2f(GLenum target, GLfloat s, GLfloat t) {
     if (state.list.active) {
         rlMultiTexCoord2f(state.list.active, target, s, t);
     } else {
 	state.texcoord[target-GL_TEXTURE0][0] = s; state.texcoord[target-GL_TEXTURE0][1] = t;
     }
 }
-GLAPI void glArrayElement(GLint i) {
+void glArrayElement(GLint i) {
     GLfloat *v;
     pointer_state_t *p;
     p = &state.pointers.color;
@@ -905,11 +905,11 @@ GLAPI void glArrayElement(GLint i) {
 // TODO: between a lock and unlock, I can assume the array pointers are unchanged
 // so I can build a renderlist_t on the first call and hold onto it
 // maybe I need a way to call a renderlist_t with (first, count)
-GLAPI void glLockArraysEXT(GLint first, GLsizei count) {
+void glLockArraysEXT(GLint first, GLsizei count) {
     state.list.locked = true;
 }
 
-GLAPI void glUnlockArraysEXT() {
+void glUnlockArraysEXT() {
     state.list.locked = false;
 }
 
@@ -922,7 +922,7 @@ static renderlist_t *glGetList(GLuint list) {
     return NULL;
 }
 
-GLAPI GLuint glGenLists(GLsizei range) {
+GLuint glGenLists(GLsizei range) {
     int start = state.list.count;
     if (state.lists == NULL) {
         state.list.cap += range + 100;
@@ -939,7 +939,7 @@ GLAPI GLuint glGenLists(GLsizei range) {
     return start + 1;
 }
 
-GLAPI void glNewList(GLuint list, GLenum mode) {
+void glNewList(GLuint list, GLenum mode) {
     if (! glIsList(list))
         return;
     state.list.name = list;
@@ -949,7 +949,7 @@ GLAPI void glNewList(GLuint list, GLenum mode) {
     state.list.compiling = true;
 }
 
-GLAPI void glEndList() {
+void glEndList() {
     GLuint list = state.list.name;
     if (state.list.compiling) {
 	// Free the previous list if it exist...
@@ -964,7 +964,7 @@ GLAPI void glEndList() {
     }
 }
 
-GLAPI void glCallList(GLuint list) {
+void glCallList(GLuint list) {
     if (state.list.compiling && state.list.active) {
 		NewStage(state.list.active, STAGE_CALLLIST);
 		/*state.list.active = extend_renderlist(state.list.active);*/
@@ -977,14 +977,14 @@ GLAPI void glCallList(GLuint list) {
         draw_renderlist(l);
 }
 
-GLAPI void glPushCall(void *call) {
+void glPushCall(void *call) {
     if (state.list.compiling && state.list.active) {
 		NewStage(state.list.active, STAGE_GLCALL);
         rlPushCall(state.list.active, call);
     }
 }
 
-GLAPI void glCallLists(GLsizei n, GLenum type, const GLvoid *lists) {
+void glCallLists(GLsizei n, GLenum type, const GLvoid *lists) {
     #define call(name, type) \
         case name: glCallList(((type *)lists)[i] + state.list.base); break
 
@@ -1020,7 +1020,7 @@ GLAPI void glCallLists(GLsizei n, GLenum type, const GLvoid *lists) {
     #undef call_bytes
 }
 
-GLAPI void glDeleteList(GLuint list) {
+void glDeleteList(GLuint list) {
     renderlist_t *l = glGetList(list);
     if (l) {
         free_renderlist(l);
@@ -1030,24 +1030,24 @@ GLAPI void glDeleteList(GLuint list) {
     // lists just grow upwards, maybe use a better storage mechanism?
 }
 
-GLAPI void glDeleteLists(GLuint list, GLsizei range) {
+void glDeleteLists(GLuint list, GLsizei range) {
     for (int i = 0; i < range; i++) {
         glDeleteList(list+i);
     }
 }
 
-GLAPI void glListBase(GLuint base) {
+void glListBase(GLuint base) {
     state.list.base = base;
 }
 
-GLAPI GLboolean glIsList(GLuint list) {
+GLboolean glIsList(GLuint list) {
     if (list - 1 < state.list.count) {
         return true;
     }
     return false;
 }
 
-GLAPI void glPolygonMode(GLenum face, GLenum mode) {
+void glPolygonMode(GLenum face, GLenum mode) {
 	if (face == GL_BACK)
 		return;		//TODO, handle face enum for polygon mode != GL_FILL
 	if (state.list.compiling && (state.list.active)) {
@@ -1076,7 +1076,7 @@ void alloc_matrix(matrixstack_t **matrixstack, int depth) {
 	(*matrixstack)->stack = (GLfloat*)malloc(sizeof(GLfloat)*depth*16);
 }
 
-GLAPI void glPushMatrix() {
+void glPushMatrix() {
 	PUSH_IF_COMPILING(glPushMatrix);
 	LOAD_GLES(glPushMatrix);
 	// Alloc matrix stacks if needed
@@ -1117,7 +1117,7 @@ GLAPI void glPushMatrix() {
 	}
 }
 
-GLAPI void glPopMatrix() {
+void glPopMatrix() {
 	PUSH_IF_COMPILING(glPopMatrix);
 	LOAD_GLES(glPopMatrix);
 	// Alloc matrix stacks if needed
